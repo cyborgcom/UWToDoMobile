@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="UWToDoMobile.Views.ToDoListView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:UWToDoMobile.Controls"
+    xmlns:mctbehaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+    xmlns:models="clr-namespace:UWToDoMobile.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewmodels="clr-namespace:UWToDoMobile.ViewModels"
+    x:DataType="viewmodels:ToDoListViewModel">
+    <ContentPage.Behaviors>
+        <mctbehaviors:EventToCommandBehavior Command="{Binding AppearingCommand}" EventName="Appearing" />
+    </ContentPage.Behaviors>
+    <Grid RowDefinitions="60, *, 100">
+        <Grid
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            BackgroundColor="MediumPurple">
+            <Label
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="UW To-D"
+                TextColor="Blue"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1">
+            <Grid Margin="10" RowDefinitions="30,*">
+                <Label
+                    Grid.Row="0"
+                    HorizontalOptions="Start"
+                    Text="To-Do"
+                    VerticalOptions="Start" />
+                <CollectionView
+                    x:Name="ToDoList"
+                    Grid.Row="1"
+                    Margin="10,0,0,0"
+                    ItemsSource="{Binding UncompletedItems, Mode=OneWay}"
+                    SelectedItem="{Binding SelectedItem}">
+                    <CollectionView.GestureRecognizers>
+                        <DropGestureRecognizer />
+                    </CollectionView.GestureRecognizers>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ListItem">
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <Grid.GestureRecognizers>
+                                    <DragGestureRecognizer DropCompletedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ToDoListViewModel}}, Path=DropItemCommand}" DropCompletedCommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                                <Image Grid.Column="0" Source="drag.png" />
+                                <Border Grid.Column="1" Margin="5">
+                                    <Grid ColumnDefinitions="Auto, *, Auto">
+                                        <controls:MyCheckBoxControl
+                                            Grid.Column="0"
+                                            CheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ToDoListViewModel}}, Path=CheckedChangedCommand}"
+                                            CheckedCommandParameter="{Binding}"
+                                            IsChecked="{Binding IsDone}"
+                                            VerticalOptions="Center" />
+                                        <Entry
+                                            x:Name="entryBox"
+                                            Grid.Column="1"
+                                            Margin="0,0,5,0"
+                                            MaxLength="20"
+                                            Placeholder="Enter text here"
+                                            Text="{Binding Description}"
+                                            VerticalOptions="Center" />
+                                        <ImageButton
+                                            Grid.Column="2"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ToDoListViewModel}}, Path=DeleteItemCommand}"
+                                            CommandParameter="{Binding}"
+                                            IsVisible="{Binding IsFocused, Source={x:Reference entryBox}}"
+                                            Source="delete.png"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <Grid
+                Grid.Row="2"
+                Margin="10"
+                RowDefinitions="30,*">
+                <Label
+                    Grid.Row="0"
+                    HorizontalOptions="Start"
+                    Text="Done"
+                    VerticalOptions="Start" />
+                <CollectionView
+                    x:Name="CmpletedList"
+                    Grid.Row="1"
+                    Margin="10,0,0,0"
+                    ItemsSource="{Binding CompletedItems, Mode=OneWay}">
+                    <CollectionView.GestureRecognizers>
+                        <DropGestureRecognizer />
+                    </CollectionView.GestureRecognizers>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:ListItem">
+                            <Grid ColumnDefinitions="Auto, *">
+                                <Grid.GestureRecognizers>
+                                    <DragGestureRecognizer DropCompletedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ToDoListViewModel}}, Path=DropItemCommand}" DropCompletedCommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                                <Image Grid.Column="0" Source="drag.png" />
+                                <Border Grid.Column="1" Margin="5">
+                                    <Grid ColumnDefinitions="Auto, *">
+                                        <controls:MyCheckBoxControl
+                                            Grid.Column="0"
+                                            CheckedCommand="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ToDoListViewModel}}, Path=CheckedChangedCommand}"
+                                            CheckedCommandParameter="{Binding}"
+                                            IsChecked="{Binding IsDone}"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Margin="0,0,5,0"
+                                            Text="{Binding Description}"
+                                            TextDecorations="Strikethrough"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout
+            Grid.Row="3"
+            Margin="10"
+            HorizontalOptions="End"
+            Spacing="20">
+            <ImageButton Command="{Binding BarCodeReaderCommand}" Source="camera.png" />
+            <ImageButton
+                Command="{Binding AddCommand}"
+                Source="add_icon.png"
+                WidthRequest="60" />
+        </HorizontalStackLayout>
+
+    </Grid>
+</ContentPage>

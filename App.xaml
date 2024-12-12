@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="UWToDoMobile.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:UWToDoMobile">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />                
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style ApplyToDerivedTypes="True" TargetType="Page">
+                <Setter Property="Shell.NavBarIsVisible" Value="False" />
+            </Style>
+
+            <Style x:Key="PopupBorder" TargetType="Border">
+                <Setter Property="Margin" Value="2" />
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="Stroke" Value="{StaticResource Gray100}" />
+                <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="UWToDoMobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:strings="clr-namespace:UWToDoMobile.Resources.Strings"
+    xmlns:views="clr-namespace:UWToDoMobile.Views">
+
+    <ShellContent
+        Title="{x:Static strings:AppResources.ToDoTab}"
+        ContentTemplate="{DataTemplate views:ToDoListView}"
+        Icon="topics_icon.png"
+        Route="ToDoListView" />
+    <ShellContent
+        Title="{x:Static strings:AppResources.BarCodeScannerTab}"
+        ContentTemplate="{DataTemplate views:BarCodeScannerView}"
+        Icon="camera.png"
+        Route="BarCodeScannerView" />
+
+</Shell>
